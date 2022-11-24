@@ -1,0 +1,51 @@
+---Пример для Debian 11
+--Первоначальная настройка виртуального сервера.
+Создаем машину на виртуальном хостинге.
+Логинимся в консоль от root (прараметры подключения брать у хостера).
+
+Обновляемся
+apt update && apt upgrade
+apt install sudo 
+
+создаем пользователя
+adduser shkrebtsov
+
+Добавляем его в SUDO
+adduser shkrebtsov sudo
+
+Перезагружаемся
+reboot
+
+Логинимся по ssh
+
+--------
+Вот здесь должна быть ебала с авторизацией по ключу
+
+и как залогиниться по ключу
+И логинимся по ключу
+-----
+
+Отключаем ssh по паролю
+
+sudo nano /etc/ssh/sshd_config
+
+PermitRootLogin no 
+PasswordAuthentication no 
+PubkeyAuthentication yes
+
+Жмем Ctrl+x, y, Enter - что бы записать файл
+
+
+Перезапускаем сервис ssh
+sudo service ssh restart
+
+Создаем системного пользователя под которым будет запускаться сервис foundryvtt
+sudo adduser --system --no-create-home foundryvtt
+
+Установка требуемых пакетов
+
+sudo apt install nginx unzip ----
+
+Скачиваем и распаковываем foundryvtt/ Выбираем вариант для Node.JS
+wget LINK_TO_DOWNLOAD
+unzip ИМЯ СКАЧАННОГО ФАЙЛА
