@@ -44,7 +44,7 @@ sudo adduser --system --no-create-home foundryvtt
 У
 
 становка требуемых пакетов
-sudo apt install nginx curl libssl unzip ----
+sudo apt install nginx curl openssl unzip ----
 
 Установка node.js
 curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
@@ -53,8 +53,8 @@ curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
 sudo apt-get install -y nodejs
 
 Создаем директории 
-sudo mkdir -p /srv/foundryvtt/foundryvtt
-sudo mkdir -p /srv/foundryvtt/foundrydata
+sudo mkdir -p /srv/foundryvtt/{foundryvtt,foundrydata}
+
 
 Скачиваем и распаковываем foundryvtt/ Выбираем вариант для Node.JS
 $ curl 'Вставить ссылку' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Connection: keep-alive' -H 'Upgrade-Insecure-Requests: 1' -o foundryvtt.zip
@@ -104,5 +104,9 @@ sudo systemctl start foundry.service
 Добавляем сервис в автозапуск
 sudo systemctl enable foundry.service 
 
+---Настройка nginx
+Создаем сайт
 
+ sudo nano /etc/nginx/sites-enabled/foundryvtt
 
+ 
