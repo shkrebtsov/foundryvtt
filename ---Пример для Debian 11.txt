@@ -41,11 +41,68 @@ sudo service ssh restart
 
 Создаем системного пользователя под которым будет запускаться сервис foundryvtt
 sudo adduser --system --no-create-home foundryvtt
+У
 
-Установка требуемых пакетов
+становка требуемых пакетов
+sudo apt install nginx curl libssl unzip ----
 
-sudo apt install nginx unzip ----
+Установка node.js
+curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
+--- Эт под вопросом !!! sudo apt-get install gcc g++ make
+ sudo sh ./setup_14.sh 
+sudo apt-get install -y nodejs
+
+Создаем директории 
+sudo mkdir -p /srv/foundryvtt/foundryvtt
+sudo mkdir -p /srv/foundryvtt/foundrydata
 
 Скачиваем и распаковываем foundryvtt/ Выбираем вариант для Node.JS
-wget LINK_TO_DOWNLOAD
-unzip ИМЯ СКАЧАННОГО ФАЙЛА
+$ curl 'Вставить ссылку' -H 'Accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8' -H 'Accept-Language: en-US,en;q=0.5' --compressed -H 'Connection: keep-alive' -H 'Upgrade-Insecure-Requests: 1' -o foundryvtt.zip
+sudo cp foundryvtt.zip /srv/foundryvtt/foundryvtt/
+cd /srv/foundryvtt/foundryvtt
+sudo unzip foundryvtt.zip 
+
+Запускаем приложение и проверяем что оно работает
+sudo node /srv/foundryvtt/foundryvtt/resources/app/main.js  -dataPath=/srv/foundryvtt/foundrydata
+Убиваем процесс
+Ctrl+c
+
+
+
+
+
+
+
+--- Запускаем как сервис
+Даем права на пользователя foundryvtt
+sudo chown foundryvtt /srv/foundryvtt/ -R
+Создаем файл для запуска
+sudo nano /etc/systemd/system/foundry.service
+Вставляем в него текст
+
+[Unit]
+Description=FoundryVTT
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+Restart=always
+RestartSec-=1
+User=theelous3
+WorkingDirectory=/srv/foundryvtt/foundryvtt/resources/app
+ExecStart=/usr/bin/node main.js --dataPath=/srv/foundryvtt/foundrydata
+
+[Install]
+WantedBy=multi-user.target
+
+
+Жмем Ctrl+x, y, Enter - что бы записать файл
+
+sudo systemctl start foundry.service 
+
+Добавляем сервис в автозапуск
+sudo systemctl enable foundry.service 
+
+
+
