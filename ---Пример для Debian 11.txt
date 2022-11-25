@@ -89,7 +89,7 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 RestartSec-=1
-User=theelous3
+User=foundryvtt
 WorkingDirectory=/srv/foundryvtt/foundryvtt/resources/app
 ExecStart=/usr/bin/node main.js --dataPath=/srv/foundryvtt/foundrydata
 
