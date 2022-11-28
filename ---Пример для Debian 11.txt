@@ -8,10 +8,10 @@ apt update && apt upgrade
 apt install sudo 
 
 создаем пользователя
-adduser shkrebtsov
+adduser ИМЯ_ПОЛЬЗОВАТЕЛЯ
 
 Добавляем его в SUDO
-adduser shkrebtsov sudo
+adduser ИМЯ_ПОЛЬЗОВАТЕЛЯ sudo
 
 Перезагружаемся
 reboot
