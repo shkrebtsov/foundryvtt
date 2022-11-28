@@ -19,7 +19,7 @@ reboot
 Логинимся по ssh
 
 --------
-Вот здесь должна быть ебала с авторизацией по ключу
+Вот здесь должна быть инструкция для PUTTY с авторизацией по ключу
 
 и как залогиниться по ключу
 И логинимся по ключу
@@ -44,11 +44,11 @@ sudo adduser --system --no-create-home foundryvtt
 У
 
 становка требуемых пакетов
-sudo apt install nginx curl openssl unzip ----
+sudo apt install nginx curl openssl unzip
 
 Установка node.js
 curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
---- Эт под вопросом !!! sudo apt-get install gcc g++ make
+
  sudo sh ./setup_14.sh 
 sudo apt-get install -y nodejs
 
