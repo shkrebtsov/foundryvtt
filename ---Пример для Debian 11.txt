@@ -63,7 +63,7 @@ cd /srv/foundryvtt/foundryvtt
 sudo unzip foundryvtt.zip 
 
 Запускаем приложение и проверяем что оно работает
-sudo node /srv/foundryvtt/foundryvtt/resources/app/main.js  -dataPath=/srv/foundryvtt/foundrydata
+sudo node /srv/foundryvtt/foundryvtt/resources/app/main.js  --dataPath=/srv/foundryvtt/foundrydata
 Убиваем процесс
 Ctrl+c
 
@@ -74,7 +74,7 @@ Ctrl+c
 
 
 --- Запускаем как сервис
-Даем права на пользователя foundryvtt
+Даем права на пользователя foundryvtt>
 sudo chown foundryvtt /srv/foundryvtt/ -R
 Создаем файл для запуска
 sudo nano /etc/systemd/system/foundry.service
