@@ -53,7 +53,7 @@ curl -sL https://deb.nodesource.com/setup_14.x -o setup_14.sh
 sudo apt-get install -y nodejs
 
 Создаем директории 
-sudo mkdir -p /srv/foundryvtt/{foundryvtt,foundrydata}
+sudo mkdir -p /srv/foundryvtt/{foundryvtt,foundrydata,foundrycert}
 
 
 Скачиваем и распаковываем foundryvtt/ Выбираем вариант для Node.JS
@@ -67,8 +67,15 @@ sudo node /srv/foundryvtt/foundryvtt/resources/app/main.js  --dataPath=/srv/foun
 Убиваем процесс
 Ctrl+c
 
+--Запуск с использование самоподписных сертификатов
+cd /srv/foundryvtt/foundrycert/
+sudo openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 99999 -nodes
+Отвечаем на все вопросы и у нас есть сгенерированные сертификаты
+Конфигурируем файл json 
+sudo nano /srv/foundryvtt/foundrydata/Config/options.json
 
-
+"proxyPort": 443,
+"proxySSL": true
 
 
 
@@ -108,5 +115,56 @@ sudo systemctl enable foundry.service
 Создаем сайт
 
  sudo nano /etc/nginx/sites-enabled/foundryvtt
+
+      server {
+
+            # Enter your fully qualified domain name or leave blank
+            server_name             Имя_домена;
+
+            # Listen on port 80 without SSL certificates
+            #listen                  80;
+            # Listen on port 443 using SSL certificates
+            listen                  443 ssl;
+            listen                  [::]:443 ssl;
+            ssl_certificate         "/srv/foundryvtt/foundrycert/cert.pem";
+            ssl_certificate_key     "/srv/foundryvtt/foundrycert/key.pem";
+
+            # Sets the Max Upload size to 300 MB
+            client_max_body_size 300M;
+
+            # Proxy Requests to Foundry VTT
+            location / {
+
+                 # Set proxy heade
+                 proxy_set_header Host $host;
+                 proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+                 proxy_set_header X-Forwarded-Proto $scheme;
+
+                 # These are important to support WebSockets
+                 proxy_set_header Upgrade $http_upgrade;
+                 proxy_set_header Connection "Upgrade";
+
+                # Make sure to set your Foundry VTT port number
+                proxy_pass http://localhost:30000;
+            }
+        }
+
+       server {
+              if ($host = Имя_домена) {
+                  return 301 https://$host$request_uri;
+             }
+
+              listen 80;
+              listen [::]:80;
+
+              server_name Имя_домена;
+              return 404;
+}
+
+
+Перезапускаем nginx
+sudo service nginx restart
+
+
 
  
